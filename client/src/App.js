@@ -12,15 +12,18 @@ function App() {
         <Router>
 
             <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo"/>
+                <header className="App-header" style={{"minHeight": "unset"}}>
+                    {/*<img src={logo} className="App-logo" alt="logo"/>*/}
                     <h1>Udemy complex application</h1>
 
-                    <Link to="/">Home</Link>
-                    <Link to="/otherpage">Other Page</Link>
+                    <div style={{"padding": "20px"}}>
+                        <Link to="/">Home</Link>
+                        &nbsp;&nbsp;
+                        <Link to="/otherpage">Other Page</Link>
+                    </div>
                 </header>
 
-                <div>
+                <div style={{"padding": "20px"}}>
                     <Route exact path="/" component={Fib} />
                     <Route path="/otherpage" component={OtherPage} />
                 </div>
