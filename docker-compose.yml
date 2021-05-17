@@ -36,6 +36,8 @@ services:
     volumes:
       - /app/node_modules
       - ./client:/app
+    environment:
+      - CHOKIDAR_USEPOLLING=true  # For windows; reload react app
 
   worker:
     build:
