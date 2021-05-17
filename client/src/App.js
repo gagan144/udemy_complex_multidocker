@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 
 import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
@@ -15,8 +15,9 @@ function App() {
                 <header className="App-header" style={{"minHeight": "unset"}}>
                     {/*<img src={logo} className="App-logo" alt="logo"/>*/}
                     <h1>Udemy complex application</h1>
+                    <h2>Version: 1.0.0</h2>
 
-                    <div style={{"padding": "20px"}}>
+                    <div style={{"padding": "20px", "color": "white"}}>
                         <Link to="/">Home</Link>
                         &nbsp;&nbsp;
                         <Link to="/otherpage">Other Page</Link>
