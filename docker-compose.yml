@@ -10,7 +10,7 @@ services:
   redis:
     image: 'redis:latest'
 
-  server:
+  api:
     build:
       dockerfile: Dockerfile.dev
       context: ./server
@@ -25,6 +25,8 @@ services:
       - PGPORT=5432
       - PGDATABASE=postgres
       - PGPASSWORD=pgroot
+#    ports:
+#      - '5000:5000'
 
   client:
     stdin_open: true
@@ -45,3 +47,14 @@ services:
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+
+  nginx:
+    depends_on:
+      - api
+      - client
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    restart: always
+    ports:
+      - '3050:80'

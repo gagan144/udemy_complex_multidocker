@@ -16,7 +16,7 @@ const {Pool} = require('pg');
 const pgClient = new Pool({
     user: keys.pgUser,
     host: keys.pgHost,
-    database: keys.pgPassword,
+    database: keys.pgDatabase,
     port: keys.pgPort
 });
 pgClient.on('error', () => console.log('Lost PG Connection'));
