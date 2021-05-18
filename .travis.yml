@@ -1,0 +1,33 @@
+language: generic
+sudo: required
+
+services:
+  - docker
+
+
+before_install:
+  - docker build -t gagan144/udemy_complex_client_test -f ./client/Dockerfile.dev ./client
+
+
+# Run tests
+script:
+  - docker run -e CI=true gagan144/udemy_complex_client_test npm run test
+
+
+after_success:
+  # Build production docker files
+  - docker build -t gagan144/udemy_complex_client ./client
+  - docker build -t gagan144/udemy_complex_nginx ./nginx
+  - docker build -t gagan144/udemy_complex_server ./server
+  - docker build -t gagan144/udemy_complex_worker ./worker
+
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  # Push docker files to docker hub
+  - docker push gagan144/udemy_complex_client
+  - docker push gagan144/udemy_complex_nginx
+  - docker push gagan144/udemy_complex_server
+  - docker push gagan144/udemy_complex_worker
+
+
