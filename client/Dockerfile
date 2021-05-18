@@ -11,7 +11,7 @@ RUN npm run build
 
 
 # ------ Phase 2 -------
-FROM ngnix
+FROM nginx
 
 EXPOSE 3000
 
