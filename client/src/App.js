@@ -15,7 +15,7 @@ function App() {
                 <header className="App-header" style={{"minHeight": "unset"}}>
                     {/*<img src={logo} className="App-logo" alt="logo"/>*/}
                     <h1>Udemy complex application</h1>
-                    <h2>Version: 1.0.4</h2>
+                    <h2>Version: 1.0.5</h2>
 
                     <div style={{"padding": "20px", "color": "white"}}>
                         <Link to="/">Home</Link>
@@ -27,6 +27,10 @@ function App() {
                 <div style={{"padding": "20px"}}>
                     <Route exact path="/" component={Fib} />
                     <Route path="/otherpage" component={OtherPage} />
+                </div>
+
+                <div align="center" style={{marginTop: '30px'}}>
+                    By: Gagandeep Singh
                 </div>
             </div>
 
