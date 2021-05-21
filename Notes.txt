@@ -1,1 +1,134 @@
-docker-compose up --build
+
+------------------------------
+Dockers
+------------------------------
+
+    docker-compose up --build
+
+
+
+
+
+------------------------------
+AWS
+------------------------------
+
+    Create : Dockerrun.aws.json
+    ---------------------------
+
+
+    VPC
+    ------------
+        - Create VPC with single public subnet
+        - Add atleast two subnets
+        - Add internet gateway
+
+
+
+    Elastic Beanstalk
+    --------------------
+        - Create new application
+            - Change Configurations
+                - Network:
+                    Select your VPC
+                - Instance:
+                    Select security groups to allow communication b/w EBS & EC2 instance
+                - Security
+                    Add keyPair if required
+
+        - ERROR: AWS Beanstalk - getting “Access denied while accessing Auto Scaling and …” error
+            1. Navigate to IAM in the AWS Console.
+            2. Navigate to the aws-elasticbeanstalk-service-role (under Access Management > Roles).
+            3. Attach the following policies:
+
+                AutoScalingFullAccess
+                ElasticLoadBalancingFullAccess
+                AWSElasticBeanstalkEnhancedHealth
+                AWSElasticBeanstalkManagedUpdatesCustomerRolePolicy
+
+            4. Then rebuilt the environment, no more errors!
+
+
+    RDS
+    ---------
+        - Create instance
+            - Select VPC
+                (must have atleast two subnets in different zones)
+
+
+        username: postgres
+        pass: postgrespassword
+        db: db_udemy_complex
+
+
+    ElastiCache
+    ----------------
+        - Create Redis instance
+            - Subnet Group: Create New
+                - Select your vpc & subnets
+
+            - Security Group: Edit Later
+
+
+    New Security Group
+    ----------------------
+    To connect all services, create a security group and attach to all services
+
+        - Create new
+        - Provide name & desc
+        - Select VPC
+        - Click create;  do not add any inbound rule
+        - Edit this SG
+            - Add inbound rule
+                Custom TCP
+                Your port range
+                Source: THIS SECURITY GROUP
+            - Save
+
+    Assign this security group to every service (EB, RDS, Redis)
+        - Redis:
+            - Modify > Edit Security Group > Add the SG
+        - RDS:
+            - Modify > Connectivity > Add the SG
+            - Continue > Select Apply immediately
+            - Apply
+
+        -EBS:
+            - Configurations > Instances > EC@ Security Groups
+            - Confirm
+
+
+    Environment Variables
+    ---------------------------
+
+        - EBS > Configuration > Software > Environment properties
+
+        You can also add env var in `Dockerrun.aws.json`:
+            environment" : [
+                  { "name" : "SETTINGS_FLAVOR", "value" : "s3" },
+                  { "name" : "AWS_BUCKET", "value": "my-docker" },
+                  { "name" : "STORAGE_PATH", "value": "/registry" },
+                  { "name" : "AWS_KEY", "value": "xxx" },
+                  { "name" : "AWS_SECRET", "value": "xxx" },
+                  { "name" : "SEARCH_BACKEND", "value": "sqlalchemy" }
+              ]
+
+
+    IAM User for travis
+    -----------------------
+        - Create user - Programmatic access
+        - Add ALL elastic beanstalk permissions
+        - Get secret & access keys
+
+
+    Travis Config
+    --------------------------
+    We only need to send `Dockerrun.aws.json`
+    All images are already there on docker hub
+
+        - Go to travis portal
+            - Select your repo
+            - Settings > Environment variable
+
+
+        - Add deploy section

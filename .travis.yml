@@ -31,3 +31,16 @@ after_success:
   - docker push gagan144/udemy_complex_worker
 
 
+deploy:
+  provider: elasticbeanstalk
+  region: "us-west-2"
+  app: "udemy-complex-beanstalk"
+  env: "Udemycomplexbeanstalk-env"
+  bucket_name: "elasticbeanstalk-us-west-2-206358424495"
+  bucket_path: "udemy-complex-multidocker"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+
+
